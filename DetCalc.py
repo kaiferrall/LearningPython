@@ -21,7 +21,6 @@ def determinant(i, matrix):
                             copy_matrix[p-1][q-1] = matrix[p][q]
                         else:
                             copy_matrix[p-1][q] = matrix[p][q]
-            print(copy_matrix)
             if a % 2 == 0:
                 det = det + (matrix[0][a] * determinant(i-1, copy_matrix))
             else:
