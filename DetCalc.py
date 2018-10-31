@@ -26,3 +26,5 @@ def determinant(i, matrix):
             else:
                 det = det -  (matrix[0][a] *determinant(i-1, copy_matrix))
     return det
+
+    
