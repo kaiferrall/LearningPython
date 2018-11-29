@@ -49,4 +49,5 @@ def setData_2D(col):
     plt.savefig("plot_" + str(col) + ".png")
 
 for i in range(0, 50):
-    setData_2D(i)
+    #setData_2D(i)
+    setData(i)
