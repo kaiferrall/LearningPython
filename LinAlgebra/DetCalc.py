@@ -29,4 +29,4 @@ def determinant(i, matrix):
 
 my_matrix = [[1,3,4,6,8,2], [2,4,-45,6,7,1], [1,2,6,3,5,-12], [-10, 42,6,3,5,-12], [1,-20,6,10,5,-12], [1,1,6,13,5,-9]]
     
-print(determinant(6, my_matrix))
+determinant(6, my_matrix)
