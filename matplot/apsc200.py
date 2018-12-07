@@ -3,13 +3,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+
 def setData(col):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.set_zlabel('Infectivity')
     ax.set_zlim(0, 1)
     ax.set_xlabel('X-Position')
+    ax.set_xlim(-110, 110)
     ax.set_ylabel('Y-Position')
+    ax.set_ylim(-110, 110)
 
     xpos = pd.read_excel("agentPosition.xlsx", sheet_name="Sheet1",
                          usecols=[col], nrows=100)
@@ -18,7 +21,7 @@ def setData(col):
     infectivity = pd.read_excel("agentData.xlsx", sheet_name="Sheet1",
                                 usecols=[col], nrows=100)
 
-    ax.scatter(xpos, ypos, infectivity, c='b', marker='.')
+    ax.scatter(xpos, ypos, infectivity, c="b", marker='.')
     plt.savefig("plot_" + str(col) + ".png")
 
 
@@ -30,24 +33,18 @@ def setData_2D(col):
     ypos = pd.read_excel("agentPosition.xlsx", sheet_name="Sheet1",
                          usecols=[col+1], nrows=100)
     area = pd.read_excel("agentData.xlsx", sheet_name="Sheet1",
-                              usecols=[col], nrows=100)*800
+                         usecols=[col], nrows=100)*800
     for i in range(0, 99):
-        if area.at[i, 1] > 0.85:
-            colors[i] = "#d11717"
-        elif area.at[i, 1] > 0.5:
-            colors[i] = "#d15b17"
-        elif area.at[i, 1] > 0.4:
-            colors[i] = "#c66627"
-        elif area.at[i, 1] > 0.3:
-            colors[i] = "#dfe22d"
-        elif area.at[i, 1] > .15:
-            colors[i] = "#17d1ab"
+        if area.at[i, 1] > 0.95:
+            colors[i] = "r"
+        elif area.at[i, 1] > 0.1:
+            colors[i] = "orange"
         else:
-            colors[i] = "#17d158"
-
+            colors[i] = "g"
     plt.scatter(xpos, ypos, s=50, c=colors, alpha=0.65)
     plt.savefig("plot_" + str(col) + ".png")
 
+
 for i in range(0, 50):
-    #setData_2D(i)
-    setData(i)
+    setData_2D(i)
+    # setData(i)
