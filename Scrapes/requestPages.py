@@ -13,7 +13,6 @@ class HTMLparser():
             elif html[i: i+7] == "</body>" and openFound is True:
                 tags.append(i)
                 break
-        print(tags)
         return html[tags[0]:tags[1]]
 
     def find_hrefs(self, html):
@@ -23,7 +22,7 @@ class HTMLparser():
                 j = i+6
                 while html[j] != '"':
                     j = j + 1
-                hrefs.append(html[i+6:j])                   
+                hrefs.append(html[i+6:j])
         return hrefs
 
 
