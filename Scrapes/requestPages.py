@@ -10,7 +10,7 @@ class HTMLparser():
             if html[i: i+5] == "<body" and openFound is False:
                 tags.append(i)
                 openFound = True
-            elif html[i: i+7] == "</body>" and openFound is True:
+            elif openFound is True and html[i: i+7] == "</body>":
                 tags.append(i)
                 break
         return html[tags[0]:tags[1]]
@@ -28,7 +28,7 @@ class HTMLparser():
 
 html = req.get(
     "https://en.wikipedia.org/wiki/Main_Page").text
-print(html)
+
 myParser = HTMLparser()
 
 body = myParser.get_body(html)
