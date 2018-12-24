@@ -20,7 +20,8 @@ def multiplication(matrix_a, matrix_b):
             for i in range(len(matrix_a)):
                 val += matrix_a[i]*matrix_b[i]
             return val
-
+        else:
+            return "ERROR: Incorrect dimensions of vectors"
     cols_a = len(matrix_a[0])
     rows_b = len(matrix_b)
 
