@@ -3,7 +3,6 @@ from fuzzywuzzy import fuzz
 
 
 class HTMLparser():
-
     def get_body(self, html):
         tags = []
         openFound = False
@@ -37,7 +36,7 @@ class HTMLparser():
                 j = i+7
                 while html[j] != '"':
                     j += 1
-                hrefs.append(html[i+12:j])
+                hrefs.append((html[i+12:j], i+7))
         return hrefs
 
     def find_hrefs(self, html):
@@ -50,51 +49,60 @@ class HTMLparser():
                 hrefs.append(html[i+6:j])
         return hrefs
 
-    def String_Filter(self, strings, baseWord):
+
+class Other_Stuff():
+    def String_Filter(self, strings, baseWord, limit):
         ratios = []
         for i in range(len(strings)):
-            ratio = fuzz.ratio(strings[i], baseWord)
-            if ratio > 40:
+            ratio = fuzz.ratio(strings[i][0], baseWord)
+            if ratio > limit:
                 ratios.append((ratio, strings[i]))
         return ratios
+
+    def replace_spaces(self, string):
+        for i in range(len(string)-1):
+            if string[i] == " ":
+                string = string[:i] + "_" + string[i+1:]
+        return string
+
+    def sorting_links(self, array):
+        largest = array[len(array)-1][0]
+        for j in range(len(array)-1, 0, -1):
+             for i in range(0, j):
+                 if array[i][0] > largest:
+                    largest = array[i][0]
+                    placeholder = array[j]
+                    array[j] = array[i]
+                    array[i] = placeholder
+             largest = array[j-1][0]
+        return array
 
 
 html = req.get(
     "https://en.wikipedia.org/wiki/Python_(programming_language)").text
 
 Parser = HTMLparser()
+Utils = Other_Stuff()
+
+body = Parser.get_body(html)
 
 
-def beta1(startHeader, endHeader, clicks):
-    wikipedia = "https://en.wikipedia.org/wiki/"
-    html = req.get(wikipedia + startHeader).text
+def beta_v2(html, end_header, prev_rating, back_index):
 
     body = Parser.get_body(html)
-    currentHeader = Parser.find_h1(body)
-    print(currentHeader)
+    header = Parser.find_h1(body)
 
-    if currentHeader == endHeader:
-        return "Found! In " + str(clicks) + " click." if clicks == 1 else "Found! In " + str(clicks) + " clicks"
+    print(back_index)
+    if back_index > 10:
+        return "Failed"
+    if header == end_header:
+        return "Found!"
 
-    else:
-        hrefs = Parser.find_local_hrefs(body)
-        ratios = Parser.String_Filter(hrefs, endHeader)
-        bestMatch = ratios[0]
-        for i in range(len(ratios)):
-            if ratios[i][0] == 100:
-                clicks += 1
-                return beta1(ratios[i][1], endHeader, clicks)
-            elif ratios[i][0] > bestMatch[0]:
-                bestMatch = ratios[i]
-        return (bestMatch, "test")
+    links = Parser.find_local_hrefs(body)
 
-
-test = beta1("Operating_system",
-             "CPython", 0)
-print(test)
-# body = myParser.get_body(html)
-
-# h1s = myParser.find_local_hrefs(body)
-# print(String_Filter(h1s))
-# print(myParser.find_h1(body))
-# print(myParser.find_local_hrefs(body))
+    ratios = Utils.String_Filter(links, end_header, 50)
+    sorted_ratios = Utils.sorting_links(ratios)
+    
+    rating = sorted_ratios[len(sorted_ratios)][1][0]
+   
+beta_v2(html, "Object-oriented programming", 0, 0)
