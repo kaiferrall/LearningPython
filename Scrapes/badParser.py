@@ -68,41 +68,24 @@ class Other_Stuff():
     def sorting_links(self, array):
         largest = array[len(array)-1][0]
         for j in range(len(array)-1, 0, -1):
-             for i in range(0, j):
-                 if array[i][0] > largest:
+            for i in range(0, j):
+                if array[i][0] > largest:
                     largest = array[i][0]
                     placeholder = array[j]
                     array[j] = array[i]
                     array[i] = placeholder
-             largest = array[j-1][0]
+            largest = array[j-1][0]
         return array
 
 
 html = req.get(
-    "https://en.wikipedia.org/wiki/Python_(programming_language)").text
+    "https://www.nytimes.com/").text
 
 Parser = HTMLparser()
 Utils = Other_Stuff()
 
 body = Parser.get_body(html)
-
-
-def beta_v2(html, end_header, prev_rating, back_index):
-
-    body = Parser.get_body(html)
-    header = Parser.find_h1(body)
-
-    print(back_index)
-    if back_index > 10:
-        return "Failed"
-    if header == end_header:
-        return "Found!"
-
-    links = Parser.find_local_hrefs(body)
-
-    ratios = Utils.String_Filter(links, end_header, 50)
-    sorted_ratios = Utils.sorting_links(ratios)
-    
-    rating = sorted_ratios[len(sorted_ratios)][1][0]
-   
-beta_v2(html, "Object-oriented programming", 0, 0)
+h1s = Parser.find_h1(body)
+atags = Parser.find_local_hrefs(body)
+print(h1s)
+print(atags)

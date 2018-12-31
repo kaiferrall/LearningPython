@@ -5,7 +5,7 @@ from numpy.random import randn
 
 np.random.seed(101)
 
-df = pd.DataFrame(randn(5,4), ["A", "B", "C", "D", "E"], ["W", "X", "Y", "Z"])
+df = pd.DataFrame(randn(5, 4), ["A", "B", "C", "D", "E"], ["W", "X", "Y", "Z"])
 
-a = df[(df["W"]>0) & (df["Y"] > 1)]
-b = df[(df["W"]>0) | (df["Y"] > 1)]
+a = df[(df["W"] > 0) & (df["Y"] > 1)]
+b = df[(df["W"] > 0) | (df["Y"] > 1)]
